@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "WhoIsLiveCLI": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "MyID": "_"
+      }
+    }
+  }
+}
