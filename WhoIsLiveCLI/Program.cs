@@ -1,55 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using Newtonsoft.Json;
 
 namespace WhoIsLiveCLI
 {
     static class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] args2)
         {
+            string[] args = { "--name", "danis_xd" };
             var request = new HttpRequest();
-            string MyID;
-
-            string path = AppDomain.CurrentDomain.BaseDirectory + "\\settings.json";
-
-            if (args.Length > 0)
+            MyID myID;
+            if ((args.Length > 0) && (args[0] == "--name"))
             {
-                if (args[0] == "--name")
-                {
-                    try
-                    {
-                        dynamic responseName = request.GetUserID(args[1]).Result;
-                        MyID = responseName.data[0].id;
-                        MyIDjson myIDjson = new MyIDjson
-                        {
-                            MyID = MyID
-                        };
-                        File.WriteAllText(path, JsonConvert.SerializeObject(myIDjson));
-                    }
-                    catch (ArgumentOutOfRangeException)
-                    {
-                        Console.WriteLine("Wrong username");
-                        return;
-                    }
-                }
+                myID = new MyID(args[1], request);
             }
-            try
+            else
             {
-                MyIDjson IDjson = JsonConvert.DeserializeObject<MyIDjson>(File.ReadAllText(path));
-                MyID = IDjson.MyID;
+                myID = new MyID();
             }
-            catch
-            {
-                Console.WriteLine("Provide username with --name");
-                return;
-            }
-
-            
-
-        
-            dynamic response = request.GetData(MyID, "").Result;
+            string ID = myID.ID;
+            dynamic response = request.GetData(ID, "").Result;
             List<string> channelsList = new List<string>();
             List<List<string>> channelsListFull = new List<List<string>>();
             for (int i = 0; i < Convert.ToInt32(response.total); i++)
@@ -57,7 +27,7 @@ namespace WhoIsLiveCLI
                 channelsList.Add(response.data[i % 100].to_id);
                 if (i % 100 == 99)
                 {
-                    response = request.GetData(MyID, response.pagination.cursor).Result;
+                    response = request.GetData(ID, response.pagination.cursor).Result;
                     channelsList = new List<string>();
                 }
             }
@@ -108,7 +78,7 @@ namespace WhoIsLiveCLI
                     dynamic responseLive = request.GetUserName(NameRequest).Result;
                     for (int j = 0; j <= i; j++)
                     {
-                        Console.WriteLine(String.Format("{0, 25} {1, 7} {2, 30} ", responseLive.data[j].login, liveListFull[j][2], liveListFull[j][3]));
+                        Console.WriteLine(String.Format("{0, 25} {1, 7} {2} ", responseLive.data[j].login, liveListFull[j][2], liveListFull[j][3]));
                     }
                 }
             }

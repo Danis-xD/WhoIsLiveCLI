@@ -3,7 +3,7 @@ using Flurl.Http;
 
 namespace WhoIsLiveCLI
 {
-    class HttpRequest
+    public class HttpRequest
     {
         private string oauth = "b4ju86p4tb4nv6hn2ubbdsqox6iczd";
 
