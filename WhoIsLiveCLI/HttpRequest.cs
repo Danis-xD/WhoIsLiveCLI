@@ -6,7 +6,7 @@ namespace WhoIsLiveCLI
     public class HttpRequest
     {
         private string oauth = "b4ju86p4tb4nv6hn2ubbdsqox6iczd";
-
+        private string channelOauth = "";
         public async Task<dynamic> GetData(string channel, string pagination)
         {
             string requestString = "https://api.twitch.tv/helix/users/follows?from_id=" + channel +
@@ -34,6 +34,20 @@ namespace WhoIsLiveCLI
             string requestString = "https://api.twitch.tv/helix/users?login=" + channel;
             var responseString = await requestString.WithHeader("Client-ID", oauth).GetJsonAsync();
             return responseString;
+        }
+        public async Task<dynamic> CreateClip(string channel)
+        {
+            try
+            {
+                dynamic responseName = GetUserID(channel).Result;
+                string requestString = "https://api.twitch.tv/helix/clips?scope=clips:edit&broadcaster_id=" + responseName.data[0].id;
+                var responseString = await requestString.WithHeader("Authorization", "Bearer "+channelOauth).PostAsync(null);
+                return responseString;
+            }
+            catch (System.ArgumentOutOfRangeException)
+            {
+                throw new System.Exception("Wrong channel name");
+            }
         }
     }
 }

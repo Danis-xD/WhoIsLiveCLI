@@ -5,14 +5,25 @@ namespace WhoIsLiveCLI
 {
     static class Program
     {
-        static void Main(string[] args2)
+        static void Main(string[] args)
         {
-            string[] args = { "--name", "danis_xd" };
             var request = new HttpRequest();
             MyID myID;
-            if ((args.Length > 0) && (args[0] == "--name"))
+            if (args.Length > 0)
             {
-                myID = new MyID(args[1], request);
+                switch (args[0])
+                {
+                    case "--name":
+                        myID = new MyID(args[1], request);
+                        break;
+                    case "--clip":
+                        dynamic clipResponse= request.CreateClip(args[1]).Result;
+                        Console.WriteLine(clipResponse.data[0].edit_url);
+                        return;
+                    default:
+                        myID = new MyID();
+                        break;
+                }
             }
             else
             {
