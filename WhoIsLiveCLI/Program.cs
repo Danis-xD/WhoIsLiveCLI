@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WhoIsLiveCLI
 {
@@ -7,6 +8,7 @@ namespace WhoIsLiveCLI
     {
         static void Main(string[] args)
         {
+            args=args.Concat(new string [] { "--name","ampzyh" }).ToArray();
             var request = new HttpRequest();
             MyID myID;
             if (args.Length > 0)
@@ -16,10 +18,10 @@ namespace WhoIsLiveCLI
                     case "--name":
                         myID = new MyID(args[1], request);
                         break;
-                    case "--clip":
-                        dynamic clipResponse= request.CreateClip(args[1]).Result;
-                        Console.WriteLine(clipResponse.data[0].edit_url);
-                        return;
+                    //case "--clip":
+                    //    dynamic clipResponse= request.CreateClip(args[1]).Result;
+                    //    Console.WriteLine(clipResponse.data[0].edit_url);
+                    //    return;
                     default:
                         myID = new MyID();
                         break;
@@ -39,6 +41,7 @@ namespace WhoIsLiveCLI
                 if (i % 100 == 99)
                 {
                     response = request.GetData(ID, response.pagination.cursor).Result;
+                    channelsListFull.Add(channelsList);
                     channelsList = new List<string>();
                 }
             }
@@ -49,7 +52,6 @@ namespace WhoIsLiveCLI
             }
 
             var liveListFull = new List<List<string>>();
-            bool fl = false;
             foreach (List<string> item in channelsListFull)
             {
 
@@ -67,16 +69,10 @@ namespace WhoIsLiveCLI
                     }
                     catch (ArgumentOutOfRangeException)
                     {
-                        fl = true;
                         break;
                     }
                 }
-
                 liveListFull.AddRange(liveList);
-                if (fl)
-                {
-                    break;
-                }
             }
 
             List<string> ListNameRequest = new List<string>();
@@ -93,6 +89,7 @@ namespace WhoIsLiveCLI
                     }
                 }
             }
+            Console.ReadKey();
         }
     }
 }

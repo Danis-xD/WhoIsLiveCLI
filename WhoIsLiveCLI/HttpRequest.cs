@@ -35,19 +35,20 @@ namespace WhoIsLiveCLI
             var responseString = await requestString.WithHeader("Client-ID", oauth).GetJsonAsync();
             return responseString;
         }
-        public async Task<dynamic> CreateClip(string channel)
-        {
-            try
-            {
-                dynamic responseName = GetUserID(channel).Result;
-                string requestString = "https://api.twitch.tv/helix/clips?scope=clips:edit&broadcaster_id=" + responseName.data[0].id;
-                var responseString = await requestString.WithHeader("Authorization", "Bearer "+channelOauth).PostAsync(null);
-                return responseString;
-            }
-            catch (System.ArgumentOutOfRangeException)
-            {
-                throw new System.Exception("Wrong channel name");
-            }
-        }
+        //public async Task<dynamic> CreateClip(string channel)
+        //{
+        //    try
+        //    {
+        //        dynamic responseName = GetUserID(channel).Result;
+        //        string requestString = "https://api.twitch.tv/helix/clips?scope=clips:edit&broadcaster_id=" + responseName.data[0].id;
+        //        var responseString = await requestString.WithHeader("Authorization", "Bearer " + channelOauth).PostAsync(null);
+        //        return responseString;
+        //    }
+        //    catch (System.ArgumentOutOfRangeException)
+        //    {
+        //       System.Console.WriteLine("Wrong channel name");
+        //       return;
+        //    }
+        //}
     }
 }

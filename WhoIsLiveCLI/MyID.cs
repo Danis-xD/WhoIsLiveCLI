@@ -18,7 +18,8 @@ namespace WhoIsLiveCLI
             }
             catch (ArgumentOutOfRangeException)
             {
-                throw new Exception("Wrong username");
+                Console.WriteLine("Wrong username");
+                return;
             }
         }
 
@@ -30,7 +31,8 @@ namespace WhoIsLiveCLI
             }
             catch
             {
-                throw new Exception("Provide username with --name");
+                Console.WriteLine("Provide username with --name");
+                return;
             }
         }
 
