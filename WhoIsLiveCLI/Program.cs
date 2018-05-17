@@ -8,7 +8,6 @@ namespace WhoIsLiveCLI
     {
         static void Main(string[] args)
         {
-            args=args.Concat(new string [] { "--name","ampzyh" }).ToArray();
             var request = new HttpRequest();
             MyID myID;
             if (args.Length > 0)
