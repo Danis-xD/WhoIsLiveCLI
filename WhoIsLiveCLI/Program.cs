@@ -15,15 +15,31 @@ namespace WhoIsLiveCLI
                 switch (args[0])
                 {
                     case "--name":
+                        try
+                        {
                         myID = new MyID(args[1], request);
                         break;
+                        }
+                        catch (ArgumentOutOfRangeException)
+                        {
+                            Console.WriteLine("Wrong username");
+                            return;
+                        }
                     //case "--clip":
                     //    dynamic clipResponse= request.CreateClip(args[1]).Result;
                     //    Console.WriteLine(clipResponse.data[0].edit_url);
                     //    return;
                     default:
-                        myID = new MyID();
-                        break;
+                        try
+                        {
+                            myID = new MyID();
+                            break;
+                        }
+                        catch (ArgumentOutOfRangeException)
+                        {
+                            Console.WriteLine("Wrong username");
+                            return;
+                        }
                 }
             }
             else
