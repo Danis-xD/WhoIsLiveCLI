@@ -91,20 +91,27 @@ namespace WhoIsLiveCLI
             }
 
             List<string> ListNameRequest = new List<string>();
-            for (var i = 0; i < liveListFull.Count; i++)
+            Tuple<string, int, string>[] OutArr = new Tuple<string, int, string>[liveListFull.Count];
+            int iMem = 0;
+            for (int i = 0; i < liveListFull.Count; i++)
             {
                 ListNameRequest.Add(liveListFull[i][0]);
-                if ((i % 100 == 99) || (i == liveListFull.Count - 1))
+                if ((i % 100 == 99) || (i == liveListFull.Count-1))
                 {
                     string NameRequest = String.Join("&id=", ListNameRequest.ToArray());
                     dynamic responseLive = request.GetUserName(NameRequest).Result;
-                    for (int j = 0; j <= i; j++)
+                    for (int j = iMem; j <= i; j++)
                     {
-                        Console.WriteLine(String.Format("{0, 25} {1, 7} {2} ", responseLive.data[j].login, liveListFull[j][2], liveListFull[j][3]));
+                        OutArr[j] = new Tuple<string, int, string>(responseLive.data[j].login, Convert.ToInt32(liveListFull[j][2]), liveListFull[j][3]);
                     }
+                    iMem += i;
                 }
             }
-            Console.ReadKey();
+            OutArr = OutArr.OrderByDescending(x => x.Item2).ToArray();
+            for (int i = 0; i < OutArr.Length; i++)
+            {
+                Console.WriteLine(String.Format("{0, 25} {1, 7} {2} ", OutArr[i].Item1, OutArr[i].Item2, OutArr[i].Item3));
+            }
         }
     }
 }
