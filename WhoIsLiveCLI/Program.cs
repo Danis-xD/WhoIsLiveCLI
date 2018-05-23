@@ -52,7 +52,12 @@ namespace WhoIsLiveCLI
             List<List<string>> channelsListFull = new List<List<string>>();
             for (int i = 0; i < Convert.ToInt32(response.total); i++)
             {
-                channelsList.Add(response.data[i % 100].to_id);
+                //this try/catch block is here because of some weird twitch API bug that I can't fix
+                try
+                {
+                    channelsList.Add(response.data[i % 100].to_id);
+                }
+                catch { }
                 if (i % 100 == 99)
                 {
                     response = request.GetData(ID, response.pagination.cursor).Result;
