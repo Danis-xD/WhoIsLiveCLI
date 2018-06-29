@@ -20,7 +20,7 @@ namespace WhoIsLiveCLI
                         myID = new MyID(args[1], request);
                         break;
                         }
-                        catch (ArgumentOutOfRangeException)
+                        catch 
                         {
                             Console.WriteLine("Wrong username");
                             return;
@@ -35,7 +35,7 @@ namespace WhoIsLiveCLI
                             myID = new MyID();
                             break;
                         }
-                        catch (ArgumentOutOfRangeException)
+                        catch 
                         {
                             Console.WriteLine("Wrong username");
                             return;
@@ -44,7 +44,15 @@ namespace WhoIsLiveCLI
             }
             else
             {
+                try
+                {
                 myID = new MyID();
+                }
+                catch 
+                {
+                    Console.WriteLine("Please use --name <your twitch username> to log in");
+                    return;
+                }
             }
             string ID = myID.ID;
             dynamic response = request.GetData(ID, "").Result;

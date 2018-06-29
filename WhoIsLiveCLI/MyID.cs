@@ -6,7 +6,7 @@ namespace WhoIsLiveCLI
 {
     public class MyID
     {
-        private string path = AppDomain.CurrentDomain.BaseDirectory + "\\settings.json";
+        private string path = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "settings.json");
 
         public MyID(string name, HttpRequest request)
         {
@@ -17,8 +17,7 @@ namespace WhoIsLiveCLI
 
         public MyID()
         {
-
-                ID = JsonConvert.DeserializeObject<dynamic>(File.ReadAllText(path)).ID;
+            ID = JsonConvert.DeserializeObject<dynamic>(File.ReadAllText(path)).ID;
         }
 
         public string ID { get; set; }
